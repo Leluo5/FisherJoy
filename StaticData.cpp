@@ -4,49 +4,53 @@
 //
 //  @ Project : Untitled
 //  @ File Name : StaticData.cpp
-//  @ Date : 2017/9/29
+//  @ Date : 2017/10/28
 //  @ Author : 
 //
 //
 
 
 #include "StaticData.h"
-#using <mscorlib.dll>
+#include "cocos2d.h"
+using namespace std;
+using namespace cocos2d;
 
 StaticData* StaticData::sharedStaticData() {
-
+	
 }
 
-StaticData::bool StaticData::init() {
-
+bool StaticData::init() {
+	_dictionary = CCDictionary::createWithContentsOfFile(_staticFileName.c_str());
+	_dictionary.retain();
+	return true;
 }
 
-void StaticData::stringFromKey(std::string Key) {
-
+const char* StaticData::stringFromKey(const std::string &key) {
+	return _dictionary.valueForKey(key)->getCString();
 }
 
-int StaticData::intFromKey(std::string Key) {
-
+int StaticData::intFromKey(const std::string &key) {
+	return _dictionary.valueForKey(key)->intValue();
 }
 
-int StaticData::floatFromKey(std::string Key) {
-
+int StaticData::floatFromKey(const std::string &key) {
+	return _dictionary.valueForKey(key)->floatValue();
 }
 
-bool StaticData::booleanFromKey(std::string Key) {
-
+bool StaticData::booleanFromKey(const std::string &key) {
+	return _dictionary.valueForKey(key)->boolValue();
 }
 
-cocos2d::CCPoint StaticData::pointFromKey(std::string Key) {
-
+cocos2d::CCPoint StaticData::pointFromKey(const std::string &key) {
+	return CCPointFromString(_dictionary.valueForKey(key)->getCString());
 }
 
-cocos2d::CCRect StaticData::rectFromKey(std::string Key) {
-
+cocos2d::CCRect StaticData::rectFromKey(const std::string &key) {
+	return CCRectFromString(_dictionary.valueForKey(key)->getCString());
 }
 
-cocos2d::CCSize StaticData::sizeFromKey(std::string Key) {
-
+cocos2d::CCSize StaticData::sizeFromKey(const std::string &key) {
+	return CCSizeFromString(_dictionary.valueForKey(key)->getCString());
 }
 
 void StaticData::purge() {
@@ -54,7 +58,12 @@ void StaticData::purge() {
 }
 
 StaticData::StaticData() {
-
+	/*CC_SAFE_RELEASE_NULL(_dictionary);*/
+	if(_dictionary != NULL)
+	{
+	_dictionary.release();
+	_dictionary;
+	}
 }
 
 StaticData::~StaticData() {
