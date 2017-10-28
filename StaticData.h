@@ -31,7 +31,7 @@ public:
 	cocos2d::CCSize sizeFromKey(const std::string &key);
 	void purge();
 protected:
-	cocos2d::CCDictionary _dictionary;
+	cocos2d::CCDictionary* _dictionary;
 	std::string _staticFileName;
 private:
 	StaticData();
